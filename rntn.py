@@ -94,6 +94,7 @@ class RNTNModel:
         trees = self.__get_rntn_trees(train_file)
         if not batch_size:
             batch_size = 1
+        res = ''
         for epoch in range(num_epoch):
             for i, tree in enumerate(trees):
                 tree.forward_propagate(tree)
@@ -103,6 +104,9 @@ class RNTNModel:
             if not (len(trees) % batch_size == 0):
                 trees[0].adagrad_update(step_size, epsilon, batch_size)
             print('Epoch', epoch + 1, 'Accuracy:', self.get_accuracy(trees))
+            res += 'Epoch' + str(epoch + 1) + 'Accuracy:' + str(self.get_accuracy(trees)) + '\n'
+        return res
+
 
     def test(self, test_file=None):
         trees = self.__get_rntn_trees(test_file)
