@@ -1,5 +1,5 @@
 ###### Declaration
-The project was forked from Nilabhra's RNTN project and I have modified it for myself.
+The project was forked from [Nilabhra's RNTN project](https://github.com/Nilabhra/RNTN) and I have modified it for myself.
 #### TOPIC: Sentiment Classification from Movie Reviews
 ##### Package and Evironment
 Setup a python3.7 virtual env and install the following packages: numpy, scipy, matplotlib, sklearn.
