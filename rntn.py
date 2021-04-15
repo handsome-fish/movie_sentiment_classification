@@ -16,39 +16,39 @@ class RNTNModel:
         ## Initializing the parameters that will be learnt
         d = wvec_dim
         C = num_classes
-        self.params = {}                         # Parameter hash table
-        self.params['L'] = np.random.uniform(    # Word vector matrix (dx|vocabulary|)
+        self.params = {}  # Parameter hash table
+        self.params['L'] = np.random.uniform(  # Word vector matrix (dx|vocabulary|)
             low=-0.0001, high=0.0001, size=(
-                d,len(self.word_index_map)))
-        self.params['V'] = np.random.uniform(    # Tensor (2dx2dxd)
-            low=-0.0001, high=0.0001, size=(2*d,2*d,d))
-        self.params['W'] = np.random.normal(     # Weight matrix (dx2d)
-            loc=0.0, scale=0.01, size=(d,2*d))
-        self.params['b'] = np.random.normal(     # Bias (dx1)
-            loc=0.0, scale=0.01, size=(d,1))
-        self.params['Ws'] = np.random.normal(    # Weights for the softmax classifier (Cxd)
-            loc=0.0, scale=0.01, size=(C,d))
-        self.params['bs'] = np.random.normal(    # Bias for the softmax classifier (Cx1)
-            loc=0.0, scale=0.01, size=(C,1))
+                d, len(self.word_index_map)))
+        self.params['V'] = np.random.uniform(  # Tensor (2dx2dxd)
+            low=-0.0001, high=0.0001, size=(2 * d, 2 * d, d))
+        self.params['W'] = np.random.normal(  # Weight matrix (dx2d)
+            loc=0.0, scale=0.01, size=(d, 2 * d))
+        self.params['b'] = np.random.normal(  # Bias (dx1)
+            loc=0.0, scale=0.01, size=(d, 1))
+        self.params['Ws'] = np.random.normal(  # Weights for the softmax classifier (Cxd)
+            loc=0.0, scale=0.01, size=(C, d))
+        self.params['bs'] = np.random.normal(  # Bias for the softmax classifier (Cx1)
+            loc=0.0, scale=0.01, size=(C, 1))
 
         ## Initializing the gradient accumulators of the parameters
-        self.params['dL'] = np.zeros(shape=(d,len(self.word_index_map)))
-        self.params['dV'] = np.zeros(shape=(2*d, 2*d, d))
-        self.params['dW'] = np.zeros(shape=(d, 2*d))
+        self.params['dL'] = np.zeros(shape=(d, len(self.word_index_map)))
+        self.params['dV'] = np.zeros(shape=(2 * d, 2 * d, d))
+        self.params['dW'] = np.zeros(shape=(d, 2 * d))
         self.params['db'] = np.zeros(shape=(d, 1))
         self.params['dWs'] = np.zeros(shape=(C, d))
         self.params['dbs'] = np.zeros(shape=(C, 1))
 
         ## Initializing the historic gradient accumulators for AdaGrad
-        self.params['hdL'] = np.zeros(shape=(d,len(self.word_index_map)))
-        self.params['hdV'] = np.zeros(shape=(2*d, 2*d, d))
-        self.params['hdW'] = np.zeros(shape=(d, 2*d))
+        self.params['hdL'] = np.zeros(shape=(d, len(self.word_index_map)))
+        self.params['hdV'] = np.zeros(shape=(2 * d, 2 * d, d))
+        self.params['hdW'] = np.zeros(shape=(d, 2 * d))
         self.params['hdb'] = np.zeros(shape=(d, 1))
         self.params['hdWs'] = np.zeros(shape=(C, d))
         self.params['hdbs'] = np.zeros(shape=(C, 1))
 
-        self.params['C'] = C # Number of classes
-        self.params['d'] = d # Dimensionality of the word vectors
+        self.params['C'] = C  # Number of classes
+        self.params['d'] = d  # Dimensionality of the word vectors
 
     def make_rntn_tree(self, current, node):
         node.label = int(current.label)
@@ -79,6 +79,7 @@ class RNTNModel:
             lacc, lc = compute_accuracy(tree.left)
             racc, rc = compute_accuracy(tree.right)
             return acc + lacc + racc, lc + rc + 1.0
+
         if type(trees) is list:
             accuracy = 0.0
             for tree in trees:
@@ -90,7 +91,7 @@ class RNTNModel:
             return compute_accuracy(trees)
 
     def train(self, train_file=None, step_size=0.001, lamda=0.01,
-                epsilon=1e-12, num_epoch=3, batch_size=None):
+              epsilon=1e-12, num_epoch=3, batch_size=None):
         trees = self.__get_rntn_trees(train_file)
         if not batch_size:
             batch_size = 1
@@ -99,7 +100,7 @@ class RNTNModel:
             for i, tree in enumerate(trees):
                 tree.forward_propagate(tree)
                 tree.back_propagate(tree, lamda=lamda)
-                if (i+1) % batch_size == 0:
+                if (i + 1) % batch_size == 0:
                     tree.adagrad_update(step_size, epsilon, batch_size)
             if not (len(trees) % batch_size == 0):
                 trees[0].adagrad_update(step_size, epsilon, batch_size)
@@ -107,13 +108,12 @@ class RNTNModel:
             res += 'Epoch' + str(epoch + 1) + 'Accuracy:' + str(self.get_accuracy(trees)) + '\n'
         return res
 
-
     def test(self, test_file=None):
         trees = self.__get_rntn_trees(test_file)
         for tree in trees:
             tree.forward_propagate(tree)
         accuracy = self.get_accuracy(trees)
-        print('Accuracy:', accuracy)
+        print('Test Accuracy:', accuracy)
 
     def save(self, save_file):
         with open(save_file, 'wb') as f:

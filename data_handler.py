@@ -114,17 +114,17 @@ def generate_phrases(file1, file2, file3, file4, file5, file6):
             f6.write(str(sentiment_label) + '\n')
 
 
-# format_sentences("dataset/stanfordSentimentTreebank/datasetSentences.txt",
-#                  "dataset/stanfordSentimentTreebank/datasetSplit.txt", "train.txt", "valid.txt", "test.txt")
-#
-# tag_sentiment("dataset/stanfordSentimentTreebank/sentiment_labels.txt",
-#               "dataset/stanfordSentimentTreebank/dictionary.txt", "train.txt", "train_final.txt")
-# tag_sentiment("dataset/stanfordSentimentTreebank/sentiment_labels.txt",
-#               "dataset/stanfordSentimentTreebank/dictionary.txt", "test.txt", "test_final.txt")
-# tag_sentiment("dataset/stanfordSentimentTreebank/sentiment_labels.txt",
-#               "dataset/stanfordSentimentTreebank/dictionary.txt", "valid.txt", "valid_final.txt")
+format_sentences("dataset/stanfordSentimentTreebank/datasetSentences.txt",
+                 "dataset/stanfordSentimentTreebank/datasetSplit.txt", "train.txt", "valid.txt", "test.txt")
 
-# short_sentences("train_final.txt")
+tag_sentiment("dataset/stanfordSentimentTreebank/sentiment_labels.txt",
+              "dataset/stanfordSentimentTreebank/dictionary.txt", "train.txt", "train_final.txt")
+tag_sentiment("dataset/stanfordSentimentTreebank/sentiment_labels.txt",
+              "dataset/stanfordSentimentTreebank/dictionary.txt", "test.txt", "test_final.txt")
+tag_sentiment("dataset/stanfordSentimentTreebank/sentiment_labels.txt",
+              "dataset/stanfordSentimentTreebank/dictionary.txt", "valid.txt", "valid_final.txt")
+
+short_sentences("train_final.txt")
 
 
 generate_phrases("dataset/stanfordSentimentTreebank/sentiment_labels.txt",
