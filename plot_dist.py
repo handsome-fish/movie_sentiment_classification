@@ -56,7 +56,7 @@ def bar_chart(values):
     # plt.title("bar chart")
 
     plt.show()
-    plt.savefig("train_short_sentences.jpg")
+    plt.savefig("train_short_sentences")
 
 
 pie_chart(data_amount("train_final.txt"), title="training Set")
